@@ -63,25 +63,27 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative overflow-hidden flex items-center justify-center p-6">
+    <div className="min-h-screen bg-slate-50 relative overflow-hidden flex items-center justify-center px-4 py-8">
 
       {/* Background Blobs */}
 
-      <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300 rounded-full blur-[120px] opacity-20" />
+      <div className="fixed top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-300 rounded-full blur-[100px] md:blur-[120px] opacity-20" />
 
-      <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-cyan-300 rounded-full blur-[120px] opacity-20" />
+      <div className="fixed bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-cyan-300 rounded-full blur-[100px] md:blur-[120px] opacity-20" />
 
       <div className="w-full max-w-2xl relative z-10">
 
-        {/* Header */}
+        {/* Hero */}
 
-        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[32px] p-8 text-white shadow-2xl mb-8">
+        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[28px] md:rounded-[40px] px-6 md:px-10 py-8 md:py-12 text-white shadow-2xl mb-6 md:mb-8">
 
-          <h1 className="text-4xl font-bold">
-            WPH Registration Portal
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-center">
+             WPH Registration
+           <br />
+            Portal 
           </h1>
 
-          <p className="mt-3 text-indigo-100">
+          <p className="mt-3 text-sm md:text-lg text-indigo-100 font-bold leading-tight text-center">
             Register students and manage enrollments.
           </p>
 
@@ -89,16 +91,18 @@ export default function Home() {
 
         {/* Form Card */}
 
-        <div className="bg-white/70 backdrop-blur-xl rounded-[32px] p-10 shadow-2xl border border-white">
+        <div className="bg-white/70 backdrop-blur-xl rounded-[28px] md:rounded-[32px] p-6 md:p-10 shadow-2xl border border-white">
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className="space-y-5 md:space-y-6"
           >
+
+            {/* WPH ID */}
 
             <div>
 
-              <label className="block mb-2 font-medium text-slate-700">
+              <label className="block mb-2 font-medium text-slate-700 text-sm md:text-base">
                 WPH ID
               </label>
 
@@ -109,14 +113,16 @@ export default function Home() {
                 onChange={handleChange}
                 placeholder="Enter WPH ID"
                 required
-                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-3 md:p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
 
             </div>
 
+            {/* Name */}
+
             <div>
 
-              <label className="block mb-2 font-medium text-slate-700">
+              <label className="block mb-2 font-medium text-slate-700 text-sm md:text-base">
                 Name
               </label>
 
@@ -127,14 +133,16 @@ export default function Home() {
                 onChange={handleChange}
                 placeholder="Enter Name"
                 required
-                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-3 md:p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
 
             </div>
 
+            {/* Email */}
+
             <div>
 
-              <label className="block mb-2 font-medium text-slate-700">
+              <label className="block mb-2 font-medium text-slate-700 text-sm md:text-base">
                 Email
               </label>
 
@@ -145,7 +153,7 @@ export default function Home() {
                 onChange={handleChange}
                 placeholder="Enter Email"
                 required
-                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-3 md:p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
 
             </div>
@@ -154,13 +162,13 @@ export default function Home() {
 
             <div>
 
-              <h2 className="text-xl font-semibold mb-4">
+              <h2 className="text-lg md:text-xl font-semibold mb-4">
                 Select Courses
               </h2>
 
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
-                <label className="flex items-center gap-3 bg-slate-100 p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
+                <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                   <input
                     type="checkbox"
@@ -170,11 +178,13 @@ export default function Home() {
                     className="w-5 h-5"
                   />
 
-                  <span>Basic</span>
+                  <span className="font-medium">
+                    Basic
+                  </span>
 
                 </label>
 
-                <label className="flex items-center gap-3 bg-slate-100 p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
+                <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                   <input
                     type="checkbox"
@@ -184,11 +194,13 @@ export default function Home() {
                     className="w-5 h-5"
                   />
 
-                  <span>Advanced</span>
+                  <span className="font-medium">
+                    Advanced
+                  </span>
 
                 </label>
 
-                <label className="flex items-center gap-3 bg-slate-100 p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
+                <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                   <input
                     type="checkbox"
@@ -198,7 +210,9 @@ export default function Home() {
                     className="w-5 h-5"
                   />
 
-                  <span>Psychotherapy</span>
+                  <span className="font-medium">
+                    Psychotherapy
+                  </span>
 
                 </label>
 
@@ -208,11 +222,11 @@ export default function Home() {
 
             {/* Buttons */}
 
-            <div className="flex flex-col md:flex-row gap-4 pt-4">
+            <div className="flex flex-col md:flex-row gap-4 pt-2">
 
               <button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition"
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-2xl font-semibold hover:scale-[1.02] transition"
               >
                 Submit Registration
               </button>
@@ -222,7 +236,7 @@ export default function Home() {
                 onClick={() =>
                   router.push("/dashboard")
                 }
-                className="flex-1 bg-white border border-slate-300 py-4 rounded-2xl font-semibold hover:bg-slate-100 transition"
+                className="flex-1 bg-white border border-slate-300 py-3 md:py-4 rounded-2xl font-semibold hover:bg-slate-100 transition"
               >
                 View Dashboard
               </button>

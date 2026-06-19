@@ -42,14 +42,41 @@ export default function StudentsPage() {
   }, [category]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-slate-50">
-        <div className="text-3xl font-bold animate-pulse">
-          Loading...
+  return (
+    <div className="min-h-screen bg-slate-50 p-6">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Hero Skeleton */}
+
+        <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
+
+        {/* Cards Skeleton */}
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="animate-pulse bg-slate-200 rounded-3xl h-40"
+            />
+          ))}
+
         </div>
+
+        {/* Chart Skeleton */}
+
+        <div className="grid lg:grid-cols-3 gap-6 mt-10">
+
+          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px] lg:col-span-2"></div>
+
+          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px]"></div>
+
+        </div>
+
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden">

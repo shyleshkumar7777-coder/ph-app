@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/navbar";
 
 import {
   Users,
@@ -68,7 +69,10 @@ export default function Dashboard() {
   if (!stats) {
   return (
     <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-7xl mx-auto">
+        
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 relative z-10">
+
+
 
         {/* Hero Skeleton */}
 
@@ -121,26 +125,29 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden">
+      <Navbar/>
 
-      <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300 rounded-full blur-[120px] opacity-20" />
+        <div className="lg:ml-72"></div>
 
-      <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-cyan-300 rounded-full blur-[120px] opacity-20" />
+          <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300 rounded-full blur-[120px] opacity-20" />
 
-      <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
+          <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-cyan-300 rounded-full blur-[120px] opacity-20" />
+
+          <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
 
         {/* HERO */}
 
-        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[40px] px-10 py-12 text-white shadow-2xl">
+          <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[40px] px-10 py-12 text-white shadow-2xl">
 
-          <h1 className="text-5xl font-bold">
-            Welcome Back 👋
-          </h1>
+            <h1 className="text-5xl font-bold">
+              Welcome Back 👋
+            </h1>
 
-          <p className="mt-4 text-lg text-indigo-100">
-            Monitor student registrations.
-          </p>
+            <p className="mt-4 text-lg text-indigo-100">
+              Monitor student registrations.
+            </p>
 
-        </div>
+            </div>
 
         {/* STATS */}
 

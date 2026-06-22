@@ -17,7 +17,7 @@ export default function StudentsPage() {
     params.category as string;
 
   const location =
-    searchParams.get("location");
+    searchParams.get("location") ?? "chennai";
 
   const [students, setStudents] =
     useState<any[]>([]);

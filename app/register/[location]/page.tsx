@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Navbar from "../../components/navbar";
@@ -11,6 +11,9 @@ export default function Home() {
   const params = useParams();
 
   const location = params.location as string;
+
+  const [loading, setLoading] =
+    useState(true);
 
   const [formData, setFormData] = useState({
     wphId: "",
@@ -67,6 +70,33 @@ export default function Home() {
       alert("Error submitting form");
     }
   };
+
+  useEffect(()=>{
+    setLoading(false);
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 p-6">
+        <div className="max-w-7xl mx-auto">
+
+          <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="animate-pulse bg-slate-200 rounded-3xl h-40"
+              />
+            ))}
+
+          </div>
+
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex items-center justify-center px-4 py-8">

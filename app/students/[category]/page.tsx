@@ -1,87 +1,105 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import {
+  useParams,
+  useSearchParams,
+} from "next/navigation";
 import Link from "next/link";
 
 export default function StudentsPage() {
   const params = useParams();
 
-  const category = params.category as string;
+  const searchParams =
+    useSearchParams();
 
-  const [students, setStudents] = useState<any[]>([]);
+  const category =
+    params.category as string;
 
-  const [loading, setLoading] = useState(true);
+  const location =
+    searchParams.get("location");
+
+  const [students, setStudents] =
+    useState<any[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
-    fetch("/api/students")
+    setLoading(true);
+
+    fetch(
+      `/api/students?location=${location}`
+    )
       .then((res) => res.json())
       .then((data) => {
+
         let filtered = data;
 
         if (category === "basic") {
+
           filtered = data.filter(
-            (student: any) => student.basic
+            (student: any) =>
+              student.basic
           );
-        } else if (category === "advanced") {
-          filtered = data.filter(
-            (student: any) => student.advanced
-          );
-        } else if (
-          category === "psychotherapy"
+
+        }
+
+        else if (
+          category === "advanced"
         ) {
+
+          filtered = data.filter(
+            (student: any) =>
+              student.advanced
+          );
+
+        }
+
+        else if (
+          category ===
+          "psychotherapy"
+        ) {
+
           filtered = data.filter(
             (student: any) =>
               student.psychotherapy
           );
+
         }
 
         setStudents(filtered);
         setLoading(false);
+
       });
-  }, [category]);
+
+  }, [category, location]);
 
   if (loading) {
-  return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    return (
+      <div className="min-h-screen bg-slate-50 p-6">
+        <div className="max-w-7xl mx-auto">
 
-        {/* Hero Skeleton */}
+          <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
 
-        <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
 
-        {/* Cards Skeleton */}
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="animate-pulse bg-slate-200 rounded-3xl h-40"
+              />
+            ))}
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
-
-          {[1, 2, 3, 4].map((item) => (
-            <div
-              key={item}
-              className="animate-pulse bg-slate-200 rounded-3xl h-40"
-            />
-          ))}
+          </div>
 
         </div>
-
-        {/* Chart Skeleton */}
-
-        <div className="grid lg:grid-cols-3 gap-6 mt-10">
-
-          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px] lg:col-span-2"></div>
-
-          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px]"></div>
-
-        </div>
-
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden">
-
-      {/* Background Blobs */}
 
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300 rounded-full blur-[120px] opacity-20" />
 
@@ -102,13 +120,14 @@ export default function StudentsPage() {
               </h1>
 
               <p className="mt-4 text-base md:text-lg text-indigo-100 text-center md:text-left">
-                Total Students: {students.length}
+                📍 {location.toUpperCase()}
               </p>
+
 
             </div>
 
             <Link
-              href="/dashboard"
+              href={`/dashboard?location=${location}`}
               className="
               bg-white
               text-indigo-600
@@ -127,7 +146,7 @@ export default function StudentsPage() {
 
         </div>
 
-        {/* STUDENTS TABLE */}
+        {/* TABLE */}
 
         <div className="bg-white rounded-[32px] p-5 md:p-8 shadow-xl mt-12">
 

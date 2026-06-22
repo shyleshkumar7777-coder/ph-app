@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       basic: body.basic,
       advanced: body.advanced,
       psychotherapy: body.psychotherapy,
+      location: body.location
     });
 
     return NextResponse.json(

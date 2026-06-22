@@ -2,12 +2,24 @@ import { NextResponse } from "next/server";
 import Student from "../../models/student";
 import { connectDB } from "../../lib/mongodb";
 
-export async function GET() {
+export async function GET(
+  request: Request
+) {
   try {
     await connectDB();
 
+    const { searchParams } =
+      new URL(request.url);
+
+    const location =
+      searchParams.get("location");
+
     const students =
-      await Student.find().sort({
+      await Student.find(
+        location
+          ? { location }
+          : {}
+      ).sort({
         createdAt: -1,
       });
 
@@ -31,7 +43,7 @@ export async function GET() {
 
     const now = new Date();
 
-    const todayRegistrations =
+    const recentRegistrations =
       students.filter((s) => {
         const d = new Date(
           s.createdAt
@@ -44,6 +56,7 @@ export async function GET() {
       }).length;
 
     const weekAgo = new Date();
+
     weekAgo.setDate(
       now.getDate() - 7
     );
@@ -76,13 +89,15 @@ export async function GET() {
       basicStudents,
       advancedStudents,
       psychotherapyStudents,
-      todayRegistrations,
+      recentRegistrations,
       weekRegistrations,
       monthRegistrations,
       recentStudents:
         students.slice(0, 10),
     });
+
   } catch (error) {
+
     console.log(error);
 
     return NextResponse.json(

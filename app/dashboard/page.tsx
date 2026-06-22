@@ -40,19 +40,29 @@ export default function Dashboard() {
 
   const router = useRouter();
 
+  const [location, setLocation] = useState("chennai");
+
   useEffect(() => {
     fetch("/api/dashboard")
       .then((res) => res.json())
       .then((data) => setStats(data));
 
     fetch("/api/students")
-  .then((res) => res.json())
-  .then((data) => {
+    .then((res) => res.json())
+    .then((data) => {
     const todayStudents = data.filter(
       (student: any) => {
         const studentDate = new Date(
           student.createdAt
         );
+
+      fetch(
+        `/api/dashboard?location=${location}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setStats(data);
+        });
 
         return (
           studentDate.toDateString() ===
@@ -64,7 +74,7 @@ export default function Dashboard() {
     setStudents(todayStudents);
     setFilteredStudents(todayStudents);
   });
-  }, []);
+  }, [location]);
 
   if (!stats) {
   return (
@@ -95,9 +105,9 @@ export default function Dashboard() {
 
         <div className="grid lg:grid-cols-3 gap-6 mt-10">
 
-          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px] lg:col-span-2"></div>
+          <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5 lg:col-span-2"></div>
 
-          <div className="animate-pulse bg-slate-200 rounded-3xl h-[350px]"></div>
+          <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5"></div>
 
         </div>
 
@@ -129,25 +139,69 @@ export default function Dashboard() {
 
         <div className="lg:ml-72"></div>
 
-          <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-300 rounded-full blur-[120px] opacity-20" />
+          <div className="fixed top-0 right-0 w-125 h-125 bg-purple-300 rounded-full blur-[120px] opacity-20" />
 
-          <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-cyan-300 rounded-full blur-[120px] opacity-20" />
+          <div className="fixed bottom-0 left-0 w-100 h-100 bg-cyan-300 rounded-full blur-[120px] opacity-20" />
 
           <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-
         {/* HERO */}
 
-          <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[40px] px-10 py-12 text-white shadow-2xl">
+          <div className="bg-linear-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-[40px] px-10 py-12 text-white shadow-2xl">
 
-            <h1 className="text-5xl font-bold">
-              Welcome Back 👋
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-            <p className="mt-4 text-lg text-indigo-100">
-              Monitor student registrations.
-            </p>
+              <div>
+
+                <h1 className="text-5xl font-bold">
+                  Welcome Back 👋
+                </h1>
+
+                <p className="mt-4 text-lg text-indigo-100">
+                  Monitor student registrations.
+                </p>
+
+              </div>
+
+              <select
+                value={location}
+                onChange={(e) =>
+                  setLocation(e.target.value)
+                }
+                className="
+                  bg-white
+                  text-slate-700
+                  px-5
+                  py-3
+                  rounded-2xl
+                  shadow-lg
+                  font-semibold
+                  min-w-45
+                  outline-none
+                  border-2
+                  border-white
+                "
+              >
+                <option value="chennai">
+                  Chennai
+                </option>
+
+                <option value="bangalore">
+                  Bangalore
+                </option>
+
+                <option value="mumbai">
+                  Mumbai
+                </option>
+
+                <option value="hyderabad">
+                  Hyderabad
+                </option>
+
+              </select>
 
             </div>
+
+          </div>
 
         {/* STATS */}
 
@@ -159,7 +213,9 @@ export default function Dashboard() {
             icon={<Users size={30} />}
             color="from-blue-500 to-indigo-600"
             onClick={() =>
-               router.push("/students/all")
+               router.push(
+                  `/students/all?location=${location}`
+               )
             }
           />
 
@@ -169,7 +225,9 @@ export default function Dashboard() {
             icon={<BookOpen size={30} />}
             color="from-green-500 to-emerald-600"
             onClick={() =>
-              router.push("/students/basic")
+              router.push(
+                  `/students/basic?location=${location}`
+               )
             }
           />
 
@@ -179,7 +237,9 @@ export default function Dashboard() {
             icon={<BookOpen size={30} />}
             color="from-pink-500 to-purple-600"
             onClick={() =>
-              router.push("/students/advanced")
+              router.push(
+                  `/students/advanced?location=${location}`
+               )
             }
           />
 
@@ -189,7 +249,9 @@ export default function Dashboard() {
             icon={<Brain size={30} />}
             color="from-orange-500 to-yellow-500"
             onClick={() =>
-              router.push("/students/psychotherapy")
+              router.push(
+                  `/students/psychotherapy?location=${location}`
+               )
             }
           />
 
@@ -199,7 +261,7 @@ export default function Dashboard() {
 
         <div className="grid lg:grid-cols-3 gap-8 mt-12">
 
-          <div className="lg:col-span-2 bg-white rounded-[32px] p-8 shadow-xl">
+          <div className="lg:col-span-2 bg-white rounded-4xl p-8 shadow-xl">
 
             <h2 className="text-3xl font-bold mb-8">
               Registration Summary
@@ -232,13 +294,13 @@ export default function Dashboard() {
 
           </div>
 
-          <div className="bg-white rounded-[32px] p-8 shadow-xl">
+          <div className="bg-white rounded-4xl p-8 shadow-xl">
 
             <h2 className="text-3xl font-bold mb-8">
               Course Distribution
             </h2>
 
-            <div className="h-[320px]">
+            <div className="h-80">
 
               <ResponsiveContainer>
 
@@ -284,7 +346,7 @@ export default function Dashboard() {
 
         {/* FILTERED STUDENTS */}
 
-        <div className="bg-white rounded-[32px] p-8 shadow-xl mt-12">
+        <div className="bg-white rounded-4xl p-8 shadow-xl mt-12">
 
           <h2 className="text-3xl font-bold mb-8">
             {selectedCategory}
@@ -382,7 +444,7 @@ function StatCard({
       onClick={onClick}
       className={`
       cursor-pointer
-      bg-gradient-to-r ${color}
+      bg-linear-to-r ${color}
       rounded-3xl
      text-white
       p-5 md:p-8

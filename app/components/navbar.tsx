@@ -22,7 +22,7 @@ export default function Navbar() {
       href: "/dashboard",
       icon: <LayoutDashboard size={18} />,
     },
-  ];
+  ];  
 
   return (
     <nav className="

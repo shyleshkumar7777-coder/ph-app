@@ -2,30 +2,40 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 import {
   LayoutDashboard,
   UserPlus,
-  Trash2,
 } from "lucide-react";
 
 export default function Navbar() {
+
   const pathname = usePathname();
+
+  const { data: session } =
+    useSession();
+
+  const location =
+    (session?.user as any)
+      ?.location || "";
 
   const navItems = [
     {
       name: "Register",
-      href: "/",
+      href: `/register/${location}`,
       icon: <UserPlus size={18} />,
     },
     {
       name: "Dashboard",
-      href: "/dashboard",
+      href: `/dashboard?location=${location}`,
       icon: <LayoutDashboard size={18} />,
     },
-  ];  
+  ];
 
   return (
-    <nav className="
+    <nav
+      className="
       sticky
       top-0
       z-50
@@ -38,22 +48,23 @@ export default function Navbar() {
       px-6
       py-4
       mb-8
-    ">
-
-      <div className="
+    "
+    >
+      <div
+        className="
         flex
         flex-col
         md:flex-row
         justify-between
         items-center
         gap-4
-      ">
-
+      "
+      >
         {/* Logo */}
 
         <div>
-
-          <h1 className="
+          <h1
+            className="
             text-3xl
             font-bold
             bg-gradient-to-r
@@ -61,23 +72,36 @@ export default function Navbar() {
             to-purple-600
             bg-clip-text
             text-transparent
-          ">
+          "
+          >
             WPH Portal
           </h1>
 
+          {location && (
+            <p
+              className="
+              text-sm
+              text-slate-500
+              mt-1
+              capitalize
+            "
+            >
+              📍 {location}
+            </p>
+          )}
         </div>
 
         {/* Navigation */}
 
-        <div className="
+        <div
+          className="
           flex
           flex-wrap
           justify-center
           gap-3
-        ">
-
+        "
+        >
           {navItems.map((item) => (
-
             <Link
               key={item.href}
               href={item.href}
@@ -92,25 +116,22 @@ export default function Navbar() {
                 duration-300
 
                 ${
-                  pathname === item.href
+                  pathname.includes(
+                    item.name
+                      .toLowerCase()
+                  )
                     ? "bg-indigo-600 text-white shadow-lg"
                     : "bg-slate-100 hover:bg-slate-200"
                 }
               `}
             >
-
               {item.icon}
 
               {item.name}
-
             </Link>
-
           ))}
-
         </div>
-
       </div>
-
     </nav>
   );
 }

@@ -55,6 +55,18 @@ export async function GET(
         );
       }).length;
 
+    const todayRegistrations =
+        students.filter((s) => {
+            const d = new Date(
+            s.createdAt
+            );
+
+            return (
+            d.toDateString() ===
+            now.toDateString()
+            );
+        }).length;
+
     const weekAgo = new Date();
 
     weekAgo.setDate(
@@ -90,6 +102,7 @@ export async function GET(
       advancedStudents,
       psychotherapyStudents,
       recentRegistrations,
+      todayRegistrations,
       weekRegistrations,
       monthRegistrations,
       recentStudents:

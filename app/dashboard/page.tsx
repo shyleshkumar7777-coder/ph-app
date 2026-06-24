@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/navbar";
+import {useSession} from "next-auth/react";
 
 import {
   Users,
@@ -40,41 +41,98 @@ export default function Dashboard() {
 
   const router = useRouter();
 
-  const [location, setLocation] = useState("chennai");
+  const {data: session, status} = useSession();
+
+  const location = session?.user.location ?? "";
+
+  const [loading, setLoading] =
+      useState(true);
 
   useEffect(() => {
-    fetch("/api/dashboard")
+  
+    if (!location) return;
+    
+    fetch(
+      `/api/dashboard?location=${location}`
+    )
       .then((res) => res.json())
-      .then((data) => setStats(data));
+      .then((data) => {
+        setStats(data);
+      });
 
-    fetch("/api/students")
-    .then((res) => res.json())
-    .then((data) => {
-    const todayStudents = data.filter(
-      (student: any) => {
-        const studentDate = new Date(
-          student.createdAt
+    fetch(
+      `/api/students?location=${location}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+
+        const todayStudents =
+          data.filter(
+            (student: any) => {
+
+              const studentDate =
+                new Date(
+                  student.createdAt
+                );
+
+              return (
+                studentDate.toDateString() ===
+                new Date().toDateString()
+              );
+
+            }
+          );
+
+        setStudents(todayStudents);
+        setFilteredStudents(
+          todayStudents
         );
+        
+      setLoading(false);
+      });
 
-      fetch(
-        `/api/dashboard?location=${location}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setStats(data);
-        });
+    }, [location]);
 
-        return (
-          studentDate.toDateString() ===
-          new Date().toDateString()
-        );
-      }
+  if (status === "loading" || loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 p-6">
+          
+          <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 relative z-10">
+
+
+
+          {/* Hero Skeleton */}
+
+          <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
+
+          {/* Cards Skeleton */}
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="animate-pulse bg-slate-200 rounded-3xl h-40"
+              />
+            ))}
+
+          </div>
+
+          {/* Chart Skeleton */}
+
+          <div className="grid lg:grid-cols-3 gap-6 mt-10">
+
+            <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5 lg:col-span-2"></div>
+
+            <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5"></div>
+
+          </div>
+
+        </div>
+      </div>
     );
+  }
 
-    setStudents(todayStudents);
-    setFilteredStudents(todayStudents);
-  });
-  }, [location]);
 
   if (!stats) {
   return (
@@ -162,42 +220,6 @@ export default function Dashboard() {
 
               </div>
 
-              <select
-                value={location}
-                onChange={(e) =>
-                  setLocation(e.target.value)
-                }
-                className="
-                  bg-white
-                  text-slate-700
-                  px-5
-                  py-3
-                  rounded-2xl
-                  shadow-lg
-                  font-semibold
-                  min-w-45
-                  outline-none
-                  border-2
-                  border-white
-                "
-              >
-                <option value="chennai">
-                  Chennai
-                </option>
-
-                <option value="bangalore">
-                  Bangalore
-                </option>
-
-                <option value="mumbai">
-                  Mumbai
-                </option>
-
-                <option value="hyderabad">
-                  Hyderabad
-                </option>
-
-              </select>
 
             </div>
 

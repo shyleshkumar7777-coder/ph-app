@@ -273,7 +273,9 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() =>
-                      router.push("/dashboard")
+                      router.push(
+                        `/dashboard?location=${location}`
+                      )
                     }
                     className="flex-1 bg-white border border-slate-300 py-3 md:py-4 rounded-2xl font-semibold hover:bg-slate-100 transition"
                   >

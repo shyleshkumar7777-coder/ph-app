@@ -1,56 +1,138 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function LocationPage() {
-  const router = useRouter();
+import { signIn }
+from "next-auth/react";
 
-  const locations = [
-    "Chennai",
-    "Bangalore",
-    "Mumbai",
-    "Hyderabad",
-  ];
+import { useRouter }
+from "next/navigation";
+
+export default function Login() {
+
+  const router =
+    useRouter();
+
+  const [username,
+    setUsername] =
+      useState("");
+
+  const [password,
+    setPassword] =
+      useState("");
+
+  const handleLogin =
+    async (
+      e: React.FormEvent
+    ) => {
+
+      e.preventDefault();
+
+      const result =
+        await signIn(
+          "credentials",
+          {
+            username,
+            password,
+            redirect: false,
+          }
+        );
+
+       if (!result?.error) {
+
+            const sessionResponse =
+                await fetch("/api/auth/session");
+
+            const session =
+                await sessionResponse.json();
+
+            router.push(
+                `/register/${session.user.location}`
+            );
+
+       }
+
+      else {
+
+        alert(
+          "Invalid Credentials"
+        );
+
+      }
+
+    };
 
   return (
+
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
 
-      <div className="bg-white p-10 rounded-3xl shadow-xl w-[500px]">
+      <form
+        onSubmit={handleLogin}
+        className="
+        bg-white
+        p-10
+        rounded-3xl
+        shadow-xl
+        w-full
+        max-w-md
+        "
+      >
 
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Select Location
+        <h1 className="text-3xl font-bold mb-8 text-center">
+          Login
         </h1>
 
-        <div className="grid gap-4">
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) =>
+            setUsername(
+              e.target.value
+            )
+          }
+          className="
+          w-full
+          p-4
+          border
+          rounded-2xl
+          mb-4
+          "
+        />
 
-          {locations.map((location) => (
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(
+              e.target.value
+            )
+          }
+          className="
+          w-full
+          p-4
+          border
+          rounded-2xl
+          mb-6
+          "
+        />
 
-            <button
-              key={location}
-              onClick={() =>
-                router.push(
-                  `/register/${location.toLowerCase()}`
-                )
-              }
-              className="
-              p-5
-              rounded-2xl
-              bg-indigo-600
-              text-white
-              font-semibold
-              hover:scale-105
-              transition
-              "
-            >
-              {location}
-            </button>
+        <button
+          className="
+          w-full
+          bg-indigo-600
+          text-white
+          py-4
+          rounded-2xl
+          "
+        >
+          Login
+        </button>
 
-          ))}
-
-        </div>
-
-      </div>
+      </form>
 
     </div>
+
   );
 }

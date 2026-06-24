@@ -99,8 +99,9 @@ export default function Home() {
   }
 
   return (
+    <div className="min-h-screen bg-slate-50 relative overflow-hidden">
+          <Navbar/>
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex items-center justify-center px-4 py-8">
-
           {/* Background Blobs */}
 
           <div className="fixed top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-300 rounded-full blur-[100px] md:blur-[120px] opacity-20" />
@@ -270,17 +271,6 @@ export default function Home() {
                     Submit Registration
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      router.push(
-                        `/dashboard?location=${location}`
-                      )
-                    }
-                    className="flex-1 bg-white border border-slate-300 py-3 md:py-4 rounded-2xl font-semibold hover:bg-slate-100 transition"
-                  >
-                    View Dashboard
-                  </button>
 
                 </div>
 
@@ -290,6 +280,7 @@ export default function Home() {
 
           </div>
 
+        </div>
         </div>
   );
 }

@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 
 import {
   LayoutDashboard,
+  LogOutIcon,
   UserPlus,
 } from "lucide-react";
 
@@ -31,6 +32,11 @@ export default function Navbar() {
       href: `/dashboard?location=${location}`,
       icon: <LayoutDashboard size={18} />,
     },
+    {
+      name: "Logout",
+      href: "/",
+      icon: <LogOutIcon size={18} />,
+    }
   ];
 
   return (

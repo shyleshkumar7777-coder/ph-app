@@ -53,7 +53,7 @@ export default function Dashboard() {
     if (!location) return;
 
     if(status === "unauthenticated"){
-      router.push("/");
+      window.location.href = "/";
     }
     
     fetch(
@@ -240,9 +240,7 @@ export default function Dashboard() {
             icon={<Users size={30} />}
             color="from-blue-500 to-indigo-600"
             onClick={() =>
-               router.push(
-                  `/students/all?location=${location}`
-               )
+               window.location.href = `/students/all?location=${location}`
             }
           />
 
@@ -252,9 +250,7 @@ export default function Dashboard() {
             icon={<BookOpen size={30} />}
             color="from-green-500 to-emerald-600"
             onClick={() =>
-              router.push(
-                  `/students/basic?location=${location}`
-               )
+              window.location.href = `/students/basic?location=${location}`
             }
           />
 
@@ -264,9 +260,7 @@ export default function Dashboard() {
             icon={<BookOpen size={30} />}
             color="from-pink-500 to-purple-600"
             onClick={() =>
-              router.push(
-                  `/students/advanced?location=${location}`
-               )
+              window.location.href = `/students/advanced?location=${location}`
             }
           />
 
@@ -276,9 +270,7 @@ export default function Dashboard() {
             icon={<Brain size={30} />}
             color="from-orange-500 to-yellow-500"
             onClick={() =>
-              router.push(
-                  `/students/psychotherapy?location=${location}`
-               )
+              window.location.href = `/students/psychotherapy?location=${location}`
             }
           />
 

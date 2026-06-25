@@ -46,10 +46,7 @@ export default function Login() {
             const session =
                 await sessionResponse.json();
 
-            router.push(
-                `/register/${session.user.location}`
-            );
-
+            window.location.href = `/register/${session.user.location}`;
        }
 
       else {

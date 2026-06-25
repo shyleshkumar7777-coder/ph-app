@@ -51,6 +51,10 @@ export default function Dashboard() {
   useEffect(() => {
   
     if (!location) return;
+
+    if(status === "unauthenticated"){
+      router.push("/");
+    }
     
     fetch(
       `/api/dashboard?location=${location}`
@@ -89,9 +93,10 @@ export default function Dashboard() {
         );
         
       setLoading(false);
+
       });
 
-    }, [location]);
+    }, [status,location,router]);
 
   if (status === "loading" || loading) {
     return (

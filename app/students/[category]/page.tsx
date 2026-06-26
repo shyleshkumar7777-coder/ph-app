@@ -6,12 +6,18 @@ import {
   useSearchParams,
 } from "next/navigation";
 import Link from "next/link";
+import {
+  Search,
+  Pencil,
+} from "lucide-react";
 
 export default function StudentsPage() {
   const params = useParams();
 
   const searchParams =
     useSearchParams();
+
+  const Index = 0;
 
   const category =
     params.category as string;
@@ -21,6 +27,12 @@ export default function StudentsPage() {
 
   const [students, setStudents] =
     useState<any[]>([]);
+
+  const [search, setSearch] =
+    useState("");
+
+  const [filter, setFilter] =
+    useState("all");
 
   const [loading, setLoading] =
     useState(true);
@@ -99,6 +111,42 @@ export default function StudentsPage() {
     );
   }
 
+  const displayedStudents =
+    students.filter((student) => {
+
+      const matchesSearch =
+
+        student.name
+          .toLowerCase()
+          .includes(search.toLowerCase())
+
+        ||
+
+        student.email
+          .toLowerCase()
+          .includes(search.toLowerCase())
+
+        ||
+
+        student.wphId
+          .toLowerCase()
+          .includes(search.toLowerCase());
+
+      const matchesFilter =
+
+        filter === "all"
+
+        ||
+
+        student.course === filter;
+
+      return (
+        matchesSearch &&
+        matchesFilter
+      );
+
+    });
+
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden">
 
@@ -132,13 +180,126 @@ export default function StudentsPage() {
 
         </div>
 
-        {/* TABLE */}
 
         <div className="bg-white rounded-[32px] p-5 md:p-8 shadow-xl mt-12">
 
           <h2 className="text-2xl md:text-3xl font-bold mb-8 capitalize">
             {category} Student List
           </h2>
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
+
+            {/* Search */}
+
+           <div className="relative flex-1">
+
+            {/* Search Icon */}
+
+            <Search
+              className="
+                absolute
+                left-4
+                top-1/2
+                -translate-y-1/2
+                text-slate-400
+              "
+              size={20}
+            />
+
+            {/* Input */}
+
+            <input
+              type="text"
+              placeholder="Search by Name, WPH ID or Email..."
+              value={search}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
+              className="
+                w-full
+                pl-12
+                pr-12
+                py-3
+                rounded-2xl
+                border
+                border-slate-300
+                focus:outline-none
+                focus:ring-2
+                focus:ring-indigo-500
+              "
+            />
+
+            {/* Clear Button */}
+
+            {search && (
+
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-slate-400
+                  hover:text-red-500
+                  transition
+                "
+              >
+                ✕
+              </button>
+
+            )}
+
+          </div>
+
+            {/* Filter */}
+
+            <select
+
+              value={filter}
+
+              onChange={(e) =>
+                setFilter(
+                  e.target.value
+                )
+              }
+
+              className="
+              px-5
+              py-3
+              rounded-2xl
+              border
+              border-slate-300
+              focus:outline-none
+              focus:ring-2
+              focus:ring-indigo-500
+              "
+
+            >
+
+              <option value="all">
+                All Courses
+              </option>
+
+              <option value="basic">
+                Basic
+              </option>
+
+              <option value="advanced">
+                Advanced
+              </option>
+
+              <option value="psychotherapy">
+                Psychotherapy
+              </option>
+
+            </select>
+
+          </div>
+
+        {/* TABLE */}
+
+        
 
           <div className="overflow-x-auto">
 
@@ -146,7 +307,19 @@ export default function StudentsPage() {
 
               <thead>
 
-                <tr className="border-b">
+                <tr
+                  className="
+                      border-b
+                      odd:bg-white
+                      even:bg-slate-50
+                      hover:bg-indigo-50
+                      transition
+                  "  
+                >
+
+                  <th className="p-4 text-left">
+                    #
+                  </th>
 
                   <th className="p-4 text-left">
                     WPH ID
@@ -165,15 +338,19 @@ export default function StudentsPage() {
                     Registered Date
                   </th>
 
+                  <th className="p-4 text-center">
+                    Actions
+                  </th>
+
                 </tr>
 
-              </thead>
+              </thead>  
 
               <tbody>
 
-                {students.length > 0 ? (
+                {displayedStudents.length > 0 ? (
 
-                  students.map(
+                  displayedStudents.map(
                     (student: any) => (
 
                       <tr
@@ -183,6 +360,10 @@ export default function StudentsPage() {
                         hover:bg-slate-50
                         "
                       >
+
+                        <td className="p-4">
+                            {Index  + 1}
+                        </td>
 
                         <td className="p-4">
                           {student.wphId}
@@ -202,6 +383,33 @@ export default function StudentsPage() {
                           {new Date(
                             student.date
                           ).toLocaleDateString()}
+
+                        </td>
+
+
+                          <td className="p-4 text-center">
+
+                          <Link
+                            href={`/edit/${student._id}`}
+                            className="
+                            inline-flex
+                            items-center
+                            gap-2
+                            bg-indigo-600
+                            text-white
+                            px-4
+                            py-2
+                            rounded-xl
+                            hover:bg-indigo-700
+                            transition
+                            "
+                          >
+
+                            <Pencil size={15} />
+
+                            Edit
+
+                          </Link>
 
                         </td>
 

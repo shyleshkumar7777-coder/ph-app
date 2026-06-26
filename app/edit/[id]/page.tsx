@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
+import { Handshake } from "lucide-react";
 
 export default function EditStudent() {
 
@@ -275,6 +276,7 @@ export default function EditStudent() {
                 type="date"
                 name="date"
                 value={formData.date}
+                onChange={handleChange}
                 className="w-full mt-2 p-4 rounded-2xl border bg-slate-100"
               />
 

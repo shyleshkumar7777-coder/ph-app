@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   LayoutDashboard,
@@ -15,30 +15,120 @@ import {
 } from "lucide-react";
 
 export default function Navbar() {
-  const pathname = usePathname();
 
-  const { data: session } = useSession();
+  const pathname =
+    usePathname();
 
-  const [open, setOpen] = useState(false);
+  const { data: session } =
+    useSession();
 
-  const location =
-    (session?.user as any)?.location || "";
+  const [open, setOpen] =
+    useState(false);
 
-  const navItems = [
-    {
-      name: "Register",
-      href: `/register/${location}`,
-      icon: <UserPlus size={20} />,
-    },
-    {
-      name: "Dashboard",
-      href: `/dashboard?location=${location}`,
-      icon: <LayoutDashboard size={20} />,
-    },
-  ];
+  const [location, setLocation] =
+    useState("");
+
+  const role =
+    (session?.user as any)?.role;
+
+  const sessionLocation =
+    (session?.user as any)?.location;
+
+  useEffect(() => {
+
+    if (!session)
+      return;
+
+    if (role === "superadmin") {
+
+      const selectedLocation =
+        localStorage.getItem(
+          "selectedLocation"
+        );
+
+      setLocation(
+        selectedLocation || ""
+      );
+
+    }
+
+    else {
+
+      setLocation(
+        sessionLocation || ""
+      );
+
+    }
+
+  }, [
+    session,
+    role,
+    sessionLocation,
+  ]);
+
+  const navItems =
+    role === "superadmin"
+
+      ? [
+
+          {
+            name: "Select Location",
+            href: "/select-location",
+            icon: <MapPin size={20} />,
+          },
+
+          ...(location
+            ? [
+
+                {
+                  name: "Register",
+                  href: `/register/${location}`,
+                  icon: <UserPlus size={20} />,
+                },
+
+                {
+                  name: "Dashboard",
+                  href: `/dashboard?location=${location}`,
+                  icon: <LayoutDashboard size={20} />,
+                },
+
+              ]
+            : []),
+
+        ]
+
+      : [
+
+          {
+            name: "Register",
+            href: `/register/${location}`,
+            icon: <UserPlus size={20} />,
+          },
+
+          {
+            name: "Dashboard",
+            href: `/dashboard?location=${location}`,
+            icon: <LayoutDashboard size={20} />,
+          },
+
+        ];
+
+  const logout = () => {
+
+    localStorage.removeItem(
+      "selectedLocation"
+    );
+
+    signOut({
+      callbackUrl: "/",
+    });
+
+  };
 
   return (
+
     <>
+
       {/* Navbar */}
 
       <nav
@@ -57,29 +147,50 @@ export default function Navbar() {
         mb-8
       "
       >
+
         <div className="flex items-center justify-between">
 
           {/* Logo */}
 
           <div>
 
-            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <h1
+              className="
+              text-2xl
+              md:text-3xl
+              font-bold
+              bg-gradient-to-r
+              from-indigo-600
+              to-purple-600
+              bg-clip-text
+              text-transparent
+            "
+            >
               WPH Portal
             </h1>
 
-            <div className="flex items-center gap-2 mt-1 text-slate-500">
+            {location && (
 
-              <MapPin size={15} className="text-red-500" />
+              <div className="flex items-center gap-2 mt-1 text-slate-500">
 
-              <span className="capitalize">
-                {location}
-              </span>
+                <MapPin
+                  size={15}
+                  className="text-red-500"
+                />
 
-            </div>
+                <span className="capitalize">
+
+                  {location}
+
+                </span>
+
+              </div>
+
+            )}
 
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop */}
 
           <div className="hidden md:flex gap-3">
 
@@ -88,60 +199,109 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all
-                ${
-                  pathname.includes(
-                    item.name.toLowerCase()
-                  )
-                    ? "bg-indigo-600 text-white shadow-lg"
-                    : "bg-slate-100 hover:bg-slate-200"
-                }`}
+                className={`
+
+                  flex
+                  items-center
+                  gap-2
+                  px-6
+                  py-3
+                  rounded-2xl
+                  transition-all
+
+                  ${
+                    pathname.includes(
+                      item.name
+                        .toLowerCase()
+                        .replace(" ", "-")
+                    )
+
+                      ? "bg-indigo-600 text-white shadow-lg"
+
+                      : "bg-slate-100 hover:bg-slate-200"
+
+                  }
+
+                `}
               >
+
                 {item.icon}
+
                 {item.name}
+
               </Link>
 
             ))}
 
             <button
-              onClick={() =>
-                signOut({
-                  callbackUrl: "/",
-                })
-              }
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-100 hover:bg-red-500 hover:text-white transition"
+              onClick={logout}
+              className="
+              flex
+              items-center
+              gap-2
+              px-6
+              py-3
+              rounded-2xl
+              bg-slate-100
+              hover:bg-red-500
+              hover:text-white
+              transition
+            "
             >
+
               <LogOut size={20} />
+
               Logout
+
             </button>
 
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu */}
 
           <button
-            onClick={() => setOpen(true)}
-            className="md:hidden p-2 rounded-xl bg-slate-100"
+            onClick={() =>
+              setOpen(true)
+            }
+            className="
+            md:hidden
+            p-2
+            rounded-xl
+            bg-slate-100
+          "
           >
+
             <Menu size={28} />
+
           </button>
 
         </div>
+
       </nav>
 
       {/* Overlay */}
 
       {open && (
+
         <div
-          onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() =>
+            setOpen(false)
+          }
+          className="
+          fixed
+          inset-0
+          bg-black/40
+          z-40
+        "
         />
+
       )}
 
-      {/* Mobile Drawer */}
+      {/* Drawer */}
 
       <div
         className={`
+
         fixed
         top-0
         right-0
@@ -152,11 +312,16 @@ export default function Navbar() {
         z-50
         transition-transform
         duration-300
+
         ${
           open
+
             ? "translate-x-0"
+
             : "translate-x-full"
+
         }
+
       `}
       >
 
@@ -165,28 +330,40 @@ export default function Navbar() {
           <div>
 
             <h2 className="text-2xl font-bold text-indigo-600">
+
               WPH Portal
+
             </h2>
 
-            <div className="flex items-center gap-2 mt-2 text-slate-500">
+            {location && (
 
-              <MapPin
-                size={16}
-                className="text-red-500"
-              />
+              <div className="flex items-center gap-2 mt-2 text-slate-500">
 
-              <span className="capitalize">
-                {location}
-              </span>
+                <MapPin
+                  size={16}
+                  className="text-red-500"
+                />
 
-            </div>
+                <span className="capitalize">
+
+                  {location.toUpperCase()}
+
+                </span>
+
+              </div>
+
+            )}
 
           </div>
 
           <button
-            onClick={() => setOpen(false)}
+            onClick={() =>
+              setOpen(false)
+            }
           >
+
             <X size={28} />
+
           </button>
 
         </div>
@@ -198,16 +375,32 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
-              className={`flex items-center gap-3 px-5 py-4 rounded-2xl transition
-              ${
-                pathname.includes(
-                  item.name.toLowerCase()
-                )
-                  ? "bg-indigo-600 text-white"
-                  : "bg-slate-100"
-              }`}
+              onClick={() =>
+                setOpen(false)
+              }
+              className={`
+                flex
+                items-center
+                gap-3
+                px-5
+                py-4
+                rounded-2xl
+
+                ${
+                  pathname.includes(
+                    item.name
+                      .toLowerCase()
+                      .replace(" ", "-")
+                  )
+
+                    ? "bg-indigo-600 text-white"
+
+                    : "bg-slate-100"
+
+                }
+              `}
             >
+
               {item.icon}
 
               {item.name}
@@ -217,12 +410,19 @@ export default function Navbar() {
           ))}
 
           <button
-            onClick={() =>
-              signOut({
-                callbackUrl: "/",
-              })
-            }
-            className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-slate-100 hover:bg-red-500 hover:text-white transition"
+            onClick={logout}
+            className="
+            flex
+            items-center
+            gap-3
+            px-5
+            py-4
+            rounded-2xl
+            bg-slate-100
+            hover:bg-red-500
+            hover:text-white
+            transition
+          "
           >
 
             <LogOut size={20} />
@@ -234,6 +434,9 @@ export default function Navbar() {
         </div>
 
       </div>
+
     </>
+
   );
+
 }

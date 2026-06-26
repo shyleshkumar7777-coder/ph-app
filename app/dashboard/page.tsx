@@ -43,14 +43,22 @@ export default function Dashboard() {
 
   const {data: session, status} = useSession();
 
-  const location = session?.user.location ?? "";
+  const role = (session?.user as any)?.role;
+
+  const location =
+    role === "superadmin"
+      ? localStorage.getItem("selectedLocation") || ""
+      : session?.user.location || "";
 
   const [loading, setLoading] =
       useState(true);
 
   useEffect(() => {
+
+    setLoading(true);
   
     if (!location) return;
+
 
     if(status === "unauthenticated"){
       window.location.href = "/";
@@ -87,12 +95,12 @@ export default function Dashboard() {
             }
           );
 
+        setLoading(false);  
+
         setStudents(todayStudents);
         setFilteredStudents(
           todayStudents
         );
-        
-      setLoading(false);
 
       });
 
@@ -368,7 +376,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-4xl p-8 shadow-xl mt-12">
 
           <h2 className="text-3xl font-bold mb-8">
-            {selectedCategory}
+            { selectedCategory}
           </h2>
 
           <div className="overflow-x-auto">
@@ -422,14 +430,7 @@ export default function Dashboard() {
 
                       <td className="p-4">
 
-                        {student.basic &&
-                          "Basic"}
-
-                        {student.advanced &&
-                          "Advanced"}
-
-                        {student.psychotherapy &&
-                          "Psychotherapy"}
+                        {student.course}
 
                       </td>
 

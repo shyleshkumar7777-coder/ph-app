@@ -87,6 +87,7 @@ const handler = NextAuth({
             id: user._id.toString(),
             name: user.username,
             location: user.location,
+            role: user.role
           };
 
         } catch (error) {
@@ -123,6 +124,9 @@ const handler = NextAuth({
         token.location =
           (user as any).location;
 
+        token.role = 
+        (user as any).role;
+
       }
 
       return token;
@@ -145,12 +149,15 @@ const handler = NextAuth({
       (session.user as any).location =
         token.location;
 
+      (session.user as any).role = 
+        token.role;
+
       return session;
     },
   },
 
   pages: {
-    signIn: "/login",
+    signIn: "/"
   },
 
   secret:

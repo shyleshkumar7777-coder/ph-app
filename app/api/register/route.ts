@@ -12,9 +12,8 @@ export async function POST(request: Request) {
       wphId: body.wphId,
       name: body.name,
       email: body.email,
-      basic: body.basic,
-      advanced: body.advanced,
-      psychotherapy: body.psychotherapy,
+      course: body.course,
+      date: body.date,
       location: body.location
     });
 

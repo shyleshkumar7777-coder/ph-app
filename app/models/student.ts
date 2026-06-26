@@ -14,17 +14,13 @@ const StudentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    basic: {
-      type: Boolean,
-      default: false,
+    course: {
+      type: String,
+      required: true,
     },
-    advanced: {
-      type: Boolean,
-      default: false,
-    },
-    psychotherapy: {
-      type: Boolean,
-      default: false,
+    date: {
+      type: Date,
+      required: true,
     },
     location: {
     type: String,

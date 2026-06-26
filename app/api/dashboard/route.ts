@@ -6,6 +6,7 @@ export async function GET(
   request: Request
 ) {
   try {
+
     await connectDB();
 
     const { searchParams } =
@@ -28,46 +29,47 @@ export async function GET(
 
     const basicStudents =
       students.filter(
-        (s) => s.basic
+        (student) =>
+          student.course ===
+          "basic"
       ).length;
 
     const advancedStudents =
       students.filter(
-        (s) => s.advanced
+        (student) =>
+          student.course ===
+          "advanced"
       ).length;
 
     const psychotherapyStudents =
       students.filter(
-        (s) => s.psychotherapy
+        (student) =>
+          student.course ===
+          "psychotherapy"
       ).length;
 
-    const now = new Date();
-
-    const recentRegistrations =
-      students.filter((s) => {
-        const d = new Date(
-          s.createdAt
-        );
-
-        return (
-          d.toDateString() ===
-          now.toDateString()
-        );
-      }).length;
+    const now =
+      new Date();
 
     const todayRegistrations =
-        students.filter((s) => {
-            const d = new Date(
-            s.createdAt
+      students.filter(
+        (student) => {
+
+          const date =
+            new Date(
+              student.createdAt
             );
 
-            return (
-            d.toDateString() ===
+          return (
+            date.toDateString() ===
             now.toDateString()
-            );
-        }).length;
+          );
 
-    const weekAgo = new Date();
+        }
+      ).length;
+
+    const weekAgo =
+      new Date();
 
     weekAgo.setDate(
       now.getDate() - 7
@@ -75,9 +77,9 @@ export async function GET(
 
     const weekRegistrations =
       students.filter(
-        (s) =>
+        (student) =>
           new Date(
-            s.createdAt
+            student.createdAt
           ) >= weekAgo
       ).length;
 
@@ -90,23 +92,31 @@ export async function GET(
 
     const monthRegistrations =
       students.filter(
-        (s) =>
+        (student) =>
           new Date(
-            s.createdAt
+            student.createdAt
           ) >= monthAgo
       ).length;
 
     return NextResponse.json({
+
       totalStudents,
+
       basicStudents,
+
       advancedStudents,
+
       psychotherapyStudents,
-      recentRegistrations,
+
       todayRegistrations,
+
       weekRegistrations,
+
       monthRegistrations,
+
       recentStudents:
         students.slice(0, 10),
+
     });
 
   } catch (error) {
@@ -122,5 +132,6 @@ export async function GET(
         status: 500,
       }
     );
+
   }
 }

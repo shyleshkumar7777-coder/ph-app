@@ -16,12 +16,21 @@ const UserSchema =
     location: {
       type: String,
       required: true,
+      default: null
     },
 
     role: {
       type: String,
-      default: "admin",
+      enum: [
+        "superadmin","admin"
+      ],
+      default: "admin"
     },
+
+    selectedLocatiom: {
+      type: String,
+      default: null
+    }
   });
 
 export default mongoose.models.User ||

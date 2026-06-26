@@ -19,20 +19,21 @@ export default function Home() {
     wphId: "",
     name: "",
     email: "",
-    basic: false,
-    advanced: false,
-    psychotherapy: false,
+    date: "",
+    course:"",
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value, checked, type } = e.target;
+
+    const { name, value } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
+
   };
 
   const handleSubmit = async (
@@ -58,9 +59,8 @@ export default function Home() {
           wphId: "",
           name: "",
           email: "",
-          basic: false,
-          advanced: false,
-          psychotherapy: false,
+          date: "",
+          course: "",
         });
       } else {
         alert(data.message);
@@ -73,7 +73,7 @@ export default function Home() {
 
   useEffect(()=>{
     setLoading(false);
-  });
+  },[]);
 
   if (loading) {
     return (
@@ -198,6 +198,22 @@ export default function Home() {
 
                 </div>
 
+                <div>
+                  <label className="block mb-2 font-medium text-slate-700 text-sm md:text-base">
+                    Date 
+                  </label>
+
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange} 
+                    required
+                    className="w-full p-3 md:p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+
+                </div>
+
                 {/* Courses */}
 
                 <div>
@@ -211,9 +227,10 @@ export default function Home() {
                     <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                       <input
-                        type="checkbox"
-                        name="basic"
-                        checked={formData.basic}
+                        type="radio"
+                        name="course"
+                        value="basic"
+                        checked={formData.course==="basic"}
                         onChange={handleChange}
                         className="w-5 h-5"
                       />
@@ -227,9 +244,10 @@ export default function Home() {
                     <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                       <input
-                        type="checkbox"
-                        name="advanced"
-                        checked={formData.advanced}
+                        type="radio"
+                        name="course"
+                        value="advanced"
+                        checked={formData.course === "advanced"}
                         onChange={handleChange}
                         className="w-5 h-5"
                       />
@@ -243,9 +261,10 @@ export default function Home() {
                     <label className="flex items-center gap-3 bg-slate-100 p-4 md:p-5 rounded-2xl cursor-pointer hover:bg-slate-200 transition">
 
                       <input
-                        type="checkbox"
-                        name="psychotherapy"
-                        checked={formData.psychotherapy}
+                        type="radio"
+                        name="course"
+                        value="psychotherapy"
+                        checked={formData.course === "psychotherapy"}
                         onChange={handleChange}
                         className="w-5 h-5"
                       />

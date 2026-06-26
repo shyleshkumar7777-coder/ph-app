@@ -38,6 +38,8 @@ export default function Login() {
           }
         );
 
+      
+
        if (!result?.error) {
 
             const sessionResponse =
@@ -46,7 +48,14 @@ export default function Login() {
             const session =
                 await sessionResponse.json();
 
-            window.location.href = `/register/${session.user.location}`;
+            console.log(session);
+
+
+            if (session?.user.role === "superadmin"){
+              window.location.href = "/select-location";
+            }else{
+              window.location.href = `/register/${session.user.location}`;
+            }
        }
 
       else {

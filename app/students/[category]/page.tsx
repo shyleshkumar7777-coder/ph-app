@@ -40,7 +40,7 @@ export default function StudentsPage() {
 
           filtered = data.filter(
             (student: any) =>
-              student.basic
+              student.course === "basic"
           );
 
         }
@@ -51,7 +51,7 @@ export default function StudentsPage() {
 
           filtered = data.filter(
             (student: any) =>
-              student.advanced
+              student.course === "advanced"
           );
 
         }
@@ -63,7 +63,7 @@ export default function StudentsPage() {
 
           filtered = data.filter(
             (student: any) =>
-              student.psychotherapy
+              student.course === "psychotherapy"
           );
 
         }
@@ -127,21 +127,6 @@ export default function StudentsPage() {
 
             </div>
 
-            <Link
-              href={`/dashboard?location=${location}`}
-              className="
-              bg-white
-              text-indigo-600
-              px-6
-              py-3
-              rounded-2xl
-              font-semibold
-              hover:scale-105
-              transition
-              "
-            >
-              Back to Dashboard
-            </Link>
 
           </div>
 
@@ -175,12 +160,9 @@ export default function StudentsPage() {
                     Email
                   </th>
 
-                  <th className="p-4 text-left">
-                    Course
-                  </th>
 
                   <th className="p-4 text-left">
-                    Registered
+                    Registered Date
                   </th>
 
                 </tr>
@@ -214,23 +196,11 @@ export default function StudentsPage() {
                           {student.email}
                         </td>
 
-                        <td className="p-4">
-
-                          {student.basic &&
-                            "Basic "}
-
-                          {student.advanced &&
-                            "Advanced "}
-
-                          {student.psychotherapy &&
-                            "Psychotherapy"}
-
-                        </td>
 
                         <td className="p-4">
 
                           {new Date(
-                            student.createdAt
+                            student.date
                           ).toLocaleDateString()}
 
                         </td>

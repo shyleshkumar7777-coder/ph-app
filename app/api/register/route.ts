@@ -8,6 +8,22 @@ export async function POST(request: Request) {
 
     await connectDB();
 
+    const existingStudent = await Student.findOne({
+      wphId: body.wphId,
+    });
+
+    if (existingStudent) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "WPH ID already exists.",
+        },
+        {
+          status: 409,
+        }
+      );
+    }
+
     const student = await Student.create({
       wphId: body.wphId,
       name: body.name,

@@ -146,13 +146,41 @@ export default function EditStudent() {
   if (loading) {
 
     return (
+        <div className="min-h-screen bg-slate-50 p-6">
+          
+          <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 relative z-10">
 
-      <div className="min-h-screen flex items-center justify-center">
 
-        Loading...
 
+          {/* Hero Skeleton */}
+
+          <div className="animate-pulse bg-slate-200 rounded-[40px] h-52"></div>
+
+          {/* Cards Skeleton */}
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="animate-pulse bg-slate-200 rounded-3xl h-40"
+              />
+            ))}
+
+          </div>
+
+          {/* Chart Skeleton */}
+
+          <div className="grid lg:grid-cols-3 gap-6 mt-10">
+
+            <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5 lg:col-span-2"></div>
+
+            <div className="animate-pulse bg-slate-200 rounded-3xl h-87.5"></div>
+
+          </div>
+
+        </div>
       </div>
-
     );
 
   }

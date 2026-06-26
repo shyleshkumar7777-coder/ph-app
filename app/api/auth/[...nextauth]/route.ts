@@ -127,6 +127,8 @@ const handler = NextAuth({
         token.role = 
         (user as any).role;
 
+        token.id = 
+        (user as any).role;
       }
 
       return token;
@@ -151,6 +153,9 @@ const handler = NextAuth({
 
       (session.user as any).role = 
         token.role;
+
+      (session.user as any).id = 
+        token.id;
 
       return session;
     },

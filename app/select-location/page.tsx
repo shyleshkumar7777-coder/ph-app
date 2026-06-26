@@ -38,7 +38,7 @@ export default function SelectLocation() {
 
   const locations = [
     "chennai",
-    "bangalore",
+    "theni",
     "hyderabad",
     "mumbai",
     "delhi",

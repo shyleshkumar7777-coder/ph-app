@@ -80,6 +80,7 @@ export default function StudentsPage() {
 
         }
 
+
         setStudents(filtered);
         setLoading(false);
 
